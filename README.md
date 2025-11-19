@@ -164,7 +164,7 @@ npm install
 
 ### **Backend (.env in `/server`)**
 ```env
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/rbac_db?retryWrites=true&w=majority
+MONGO_URI=uri
 JWT_SECRET=your_jwt_secret_key_here
 PORT=5000
 ```
@@ -207,37 +207,9 @@ Navigate to `http://localhost:5173`
 
 ---
 
-## 🚀 Deployment
 
-### **Deploy to Render.com**
 
-#### **Backend Deployment**
-1. Go to [Render Dashboard](https://dashboard.render.com/)
-2. Click **New +** → **Web Service**
-3. Connect your GitHub repository
-4. **Settings:**
-   - **Name:** `rbac-server`
-   - **Root Directory:** `server`
-   - **Build Command:** `npm install`
-   - **Start Command:** `npm start`
-5. **Environment Variables:**
-   - `MONGO_URI`: Your MongoDB Atlas connection string
-   - `JWT_SECRET`: Your secret key
-   - `PORT`: `5000`
-6. Click **Create Web Service**
-7. Copy the deployed URL (e.g., `https://rbac-server.onrender.com`)
 
-#### **Frontend Deployment**
-1. Click **New +** → **Static Site**
-2. Select the same repository
-3. **Settings:**
-   - **Name:** `rbac-client`
-   - **Root Directory:** `client`
-   - **Build Command:** `npm install && npm run build`
-   - **Publish Directory:** `dist`
-4. **Environment Variable:**
-   - `VITE_API_URL`: Your backend URL (e.g., `https://rbac-server.onrender.com`)
-5. Click **Create Static Site**
 
 ---
 
