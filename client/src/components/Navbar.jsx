@@ -21,7 +21,7 @@ const Navbar = () => {
 
                 <div className="flex items-center gap-4">
                     <div className="hidden md:flex items-center gap-4 mr-2 border-r border-slate-200 pr-4">
-                        <a href="#" className="text-slate-500 hover:text-blue-600 transition-colors">
+                        <a href="https://github.com/Bharathan-vicky/RBAC_System" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-blue-600 transition-colors">
                             <Github size={20} />
                         </a>
                         <a href="https://x.com/home" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-blue-600 transition-colors">
