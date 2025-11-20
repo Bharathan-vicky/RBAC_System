@@ -71,27 +71,33 @@ if (process.env.MONGO_URI) {
     mongoURI = 'mongodb://127.0.0.1:27017/rbac_db';
 }
 
-console.log('Attempting MongoDB connection...');
-console.log('MongoDB URI format:', mongoURI.substring(0, 30) + '...');
+const connectDB = async () => {
+    try {
+        console.log('Attempting MongoDB connection...');
+        console.log('MongoDB URI format:', mongoURI.substring(0, 30) + '...');
 
-mongoose.connect(mongoURI, {
-    serverSelectionTimeoutMS: 30000, // Increased to 30 seconds
-    socketTimeoutMS: 45000, // Socket timeout
-    family: 4 // Use IPv4, skip trying IPv6
-})
-    .then(() => {
+        await mongoose.connect(mongoURI, {
+            serverSelectionTimeoutMS: 30000,
+            socketTimeoutMS: 45000,
+            family: 4
+        });
+
         console.log('✅ MongoDB Connected Successfully!');
         console.log('Database:', mongoose.connection.db.databaseName);
         console.log('Host:', mongoose.connection.host);
-    })
-    .catch(err => {
+    } catch (err) {
         console.error('❌ MongoDB Connection Failed!');
         console.error('Error name:', err.name);
         console.error('Error message:', err.message);
-        if (err.reason) {
-            console.error('Reason:', err.reason);
-        }
-    });
+        if (err.reason) console.error('Reason:', err.reason);
+
+        // Retry logic
+        console.log('Retrying connection in 5 seconds...');
+        setTimeout(connectDB, 5000);
+    }
+};
+
+connectDB();
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
