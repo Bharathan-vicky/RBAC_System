@@ -26,10 +26,16 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => res.send('Server is running'));
 
 // Database Connection
-mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/rbac_db', {
-    serverSelectionTimeoutMS: 5000
+const mongoURI = process.env.MONGO_URI
+    ? process.env.MONGO_URI.replace('/?', '/rbac_db?') // Add database name to Atlas URI
+    : 'mongodb://127.0.0.1:27017/rbac_db';
+
+mongoose.connect(mongoURI, {
+    serverSelectionTimeoutMS: 30000, // Increased to 30 seconds
+    socketTimeoutMS: 45000, // Socket timeout
+    family: 4 // Use IPv4, skip trying IPv6
 })
-    .then(() => console.log('MongoDB Connected'))
+    .then(() => console.log('MongoDB Connected to:', mongoURI.split('@')[1] || 'localhost'))
     .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
