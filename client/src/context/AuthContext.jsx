@@ -3,6 +3,12 @@ import axios from 'axios';
 
 const AuthContext = createContext();
 
+// API URL with fallback
+const API_URL = import.meta.env.VITE_API_URL ||
+    (import.meta.env.MODE === 'production' ? window.location.origin : 'http://localhost:5000');
+
+console.log('API URL:', API_URL);
+
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
@@ -21,7 +27,7 @@ export const AuthProvider = ({ children }) => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             }
 
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/me`);
+            const { data } = await axios.get(`${API_URL}/api/auth/me`);
             setUser(data);
         } catch (error) {
             localStorage.removeItem('token');
@@ -33,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const login = async (email, password) => {
-        const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, { email, password });
+        const { data } = await axios.post(`${API_URL}/api/auth/login`, { email, password });
 
         if (data.token) {
             localStorage.setItem('token', data.token);
@@ -45,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const register = async (username, email, password, role) => {
-        const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, { username, email, password, role });
+        const { data } = await axios.post(`${API_URL}/api/auth/register`, { username, email, password, role });
 
         if (data.token) {
             localStorage.setItem('token', data.token);
@@ -58,7 +64,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/logout`);
+            await axios.post(`${API_URL}/api/auth/logout`);
         } catch (error) {
             console.error('Logout error', error);
         }
